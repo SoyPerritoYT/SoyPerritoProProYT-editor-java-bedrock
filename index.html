@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SoyPerritoProProYT - Editor de Skins (Java & Bedrock)</title>
+    <title>SoyPerritoProProYT - Editor de Skins Online</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #121212;
@@ -18,100 +14,116 @@
             padding: 20px;
         }
         header {
-            padding: 40px 20px;
+            padding: 30px 20px;
             background: linear-gradient(135deg, #1f1f1f, #2d2d2d);
             border-bottom: 4px solid #4CAF50;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border-radius: 10px;
         }
-        h1 {
-            color: #4CAF50;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        p.subtitle {
-            color: #b0b0b0;
-            font-size: 1.1rem;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        h1 { color: #4CAF50; font-size: 2.2rem; margin-bottom: 5px; }
+        p.subtitle { color: #b0b0b0; font-size: 1rem; }
+        
+        .container { max-width: 900px; margin: 0 auto; }
+        
         .card {
             background: #1e1e1e;
             border: 1px solid #333;
             border-radius: 8px;
-            padding: 25px;
+            padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .card h2 {
-            margin-bottom: 15px;
-            color: #ff9800;
-        }
-        .btn-group {
+        .card h2 { margin-bottom: 15px; color: #ff9800; font-size: 1.5rem; }
+
+        /* Estilos del Editor */
+        .editor-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             gap: 15px;
+        }
+        .tools {
+            display: flex;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-top: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="color"] {
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: none;
+        }
+        canvas {
+            background: #2b2b2b;
+            image-rendering: pixelated;
+            border: 2px solid #555;
+            cursor: crosshair;
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 0 15px rgba(0,0,0,0.8);
         }
         .btn {
             display: inline-block;
-            padding: 12px 25px;
+            padding: 10px 20px;
             background: #252525;
             color: white;
             text-decoration: none;
             border-radius: 6px;
             border: 1px solid #555;
             font-weight: bold;
+            cursor: pointer;
             transition: 0.3s;
         }
-        .btn:hover {
-            background: #4CAF50;
-            border-color: #4CAF50;
-            transform: translateY(-2px);
+        .btn:hover { background: #4CAF50; border-color: #4CAF50; }
+        .btn-yt { background: #ff0000; border-color: #ff0000; }
+        .btn-yt:hover { background: #cc0000; border-color: #cc0000; }
+
+        .links-section {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
-        .btn-yt {
-            background: #ff0000;
-            border-color: #ff0000;
-        }
-        .btn-yt:hover {
-            background: #cc0000;
-            border-color: #cc0000;
-        }
-        footer {
-            margin-top: 40px;
-            color: #777;
-            font-size: 0.9rem;
-        }
+        footer { margin-top: 30px; color: #777; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>SoyPerritoProProYT</h1>
-        <p class="subtitle">Editor y Repositorio Oficial de Skins para Minecraft Java & Bedrock</p>
+        <p class="subtitle">Creador y Editor de Skins para Minecraft Java & Bedrock</p>
     </header>
 
     <div class="container">
         
-        <!-- Sección de Enlaces a Carpetas -->
+        <!-- Tarjeta del Editor Interactivo -->
         <div class="card">
-            <h2>📂 Explora los Archivos</h2>
-            <p>Accede directamente a las carpetas con las texturas y aspectos organizados.</p>
-            <div class="btn-group">
-                <a class="btn" href="bedrock/">📱 Versión Bedrock</a>
-                <a class="btn" href="java/">💻 Versión Java</a>
+            <h2>🎨 Editor de Skins Rápido (Canvas)</h2>
+            <p style="margin-bottom: 15px; color: #ccc;">Selecciona un color, pinta píxel a píxel tu skin y descárgala en PNG para usarla en el juego.</p>
+            
+            <div class="editor-container">
+                <div class="tools">
+                    <label>Color: <input type="color" id="colorPicker" value="#4CAF50"></label>
+                    <button class="btn" id="btnClear">Limpiar</button>
+                    <button class="btn" id="btnDownload" style="background: #2e7d32;">Descargar Skin (.png)</button>
+                </div>
+                
+                <!-- Lienzo de la Skin (Se dibuja a 64x64 escalado) -->
+                <canvas id="skinCanvas" width="256" height="256"></canvas>
             </div>
         </div>
 
-        <!-- Sección del Canal de YouTube -->
+        <!-- Acceso a Carpetas y YouTube -->
         <div class="card">
-            <h2>📺 ¡Visita mi Canal de YouTube!</h2>
-            <p>Subo contenido de Minecraft, gameplays y tutoriales de edición.</p>
-            <div class="btn-group">
-                <a class="btn btn-yt" href="https://www.youtube.com/@soyperritoproproyt" target="_blank">Ir al Canal de YouTube</a>
+            <h2>📂 Repositorio y Canal</h2>
+            <div class="links-section">
+                <a class="btn" href="bedrock/">📁 Carpeta Bedrock</a>
+                <a class="btn" href="java/">📁 Carpeta Java</a>
+                <a class="btn btn-yt" href="https://www.youtube.com/@soyperritoproproyt" target="_blank">📺 Canal de YouTube</a>
             </div>
         </div>
 
@@ -120,6 +132,56 @@
     <footer>
         <p>&copy; 2026 SoyPerritoProProYT. Todos los derechos reservados.</p>
     </footer>
+
+    <script>
+        const canvas = document.getElementById('skinCanvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const btnClear = document.getElementById('btnClear');
+        const btnDownload = document.getElementById('btnDownload');
+
+        // Tamaño de la cuadricula de la skin (ej: 64x64 emulado en bloques)
+        const gridSize = 32; 
+        const pixelSize = canvas.width / gridSize;
+
+        // Rellenar fondo inicial transparente/gris oscuro
+        ctx.fillStyle = '#333333';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let isDrawing = false;
+
+        function drawPixel(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((e.clientX - rect.left) / (rect.width / gridSize));
+            const y = Math.floor((e.clientY - rect.top) / (rect.height / gridSize));
+
+            ctx.fillStyle = colorPicker.value;
+            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; drawPixel(e); });
+        canvas.addEventListener('mousemove', drawPixel);
+        window.addEventListener('mouseup', () => { isDrawing = false; });
+
+        // Soporte táctil para móviles
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; drawPixel(e.touches[0]); e.preventDefault(); });
+        canvas.addEventListener('touchmove', (e) => { drawPixel(e.touches[0]); e.preventDefault(); });
+        window.addEventListener('touchend', () => { isDrawing = false; });
+
+        btnClear.addEventListener('click', () => {
+            ctx.fillStyle = '#333333';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+
+        btnDownload.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'custom_skin_perrito.png';
+            link.href = canvas.toDataURL('image/png');
+            link.link;
+            link.click();
+        });
+    </script>
 
 </body>
 </html>
