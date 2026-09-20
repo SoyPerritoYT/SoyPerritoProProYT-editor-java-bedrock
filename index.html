@@ -94,9 +94,11 @@
             background: none;
         }
 
+        /* Estilo visual escalado para que se vea grande en pantalla pero exporte 64x64 */
         canvas {
             background: #1a1a1a;
             image-rendering: pixelated;
+            image-rendering: crisp-edges;
             border: 3px solid #555;
             cursor: crosshair;
             width: 320px;
@@ -142,39 +144,34 @@
 
     <header>
         <h1>SoyPerritoProProYT</h1>
-        <p class="subtitle">Editor Oficial de Skins 64x64 para Minecraft</p>
+        <p class="subtitle">Editor Oficial de Skins 64x64</p>
     </header>
 
     <div class="container">
         
-        <!-- Editor 64x64 -->
         <div class="card">
-            <h2>🎨 Editor de Skins 64x64 Pro</h2>
-            <p style="margin-bottom: 15px; color: #ccc;">Diseña tu skin píxel a píxel en formato real de 64x64 listo para importar al juego.</p>
+            <h2>🎨 Editor de Skins 64x64</h2>
+            <p style="margin-bottom: 15px; color: #ccc;">Diseña tu skin. Se descargará estrictamente en formato 64x64 compatible con aplicaciones y Minecraft.</p>
             
             <div class="editor-layout">
-                <!-- Herramientas -->
                 <div class="toolbar">
                     <button class="tool-btn active" id="btnPencil">✏️ Lápiz</button>
                     <button class="tool-btn" id="btnEraser">🧹 Borrador</button>
                     <label>Color: <input type="color" id="colorPicker" value="#00bcd4"></label>
-                    <button class="btn" id="btnClear" style="padding: 6px 12px; font-size: 0.9rem;">Limpiar Fondo</button>
+                    <button class="btn" id="btnClear" style="padding: 6px 12px; font-size: 0.9rem;">Limpiar</button>
                 </div>
 
-                <!-- Paleta de colores rápidos -->
                 <div class="color-palette" id="palette"></div>
                 
-                <!-- Lienzo 64x64 real -->
+                <!-- Lienzo real de 64x64 píxeles exactos -->
                 <canvas id="skinCanvas" width="64" height="64"></canvas>
 
-                <!-- Descarga -->
                 <div class="action-buttons">
                     <button class="btn" id="btnDownload" style="background: #2e7d32; font-size: 1.1rem;">📥 Descargar Skin 64x64 (.png)</button>
                 </div>
             </div>
         </div>
 
-        <!-- Accesos -->
         <div class="card">
             <h2>📂 Repositorio y Canal</h2>
             <div class="links-section">
@@ -200,34 +197,36 @@
         const btnDownload = document.getElementById('btnDownload');
         const paletteContainer = document.getElementById('palette');
 
-        const gridSize = 64; // Formato oficial de skin 64x64
+        const gridSize = 64;
         let currentTool = 'pencil';
         let isDrawing = false;
 
-        // Matriz de 64x64 inicializada en color de fondo oscuro
-        let skinGrid = Array(gridSize * gridSize).fill('#222222');
+        let skinGrid = Array(gridSize * gridSize).fill('rgba(0,0,0,0)'); // Fondo transparente por defecto para skins
 
-        // Dibujar silueta básica centrada del personaje en la plantilla 64x64
-        // Cabeza
-        for(let y=8; y<24; y++) {
-            for(let x=24; x<40; x++) { skinGrid[y*gridSize + x] = '#d4a373'; }
-        }
-        // Torso
-        for(let y=24; y<40; y++) {
-            for(let x=20; x<36; x++) { skinGrid[y*gridSize + x] = '#3f37c9'; }
-        }
-        // Brazos
-        for(let y=24; y<40; y++) {
-            for(let x=12; x<20; x++) { skinGrid[y*gridSize + x] = '#d4a373'; }
-            for(let x=36; x<44; x++) { skinGrid[y*gridSize + x] = '#d4a373'; }
-        }
-        // Piernas
-        for(let y=40; y<60; y++) {
-            for(let x=20; x<28; x++) { skinGrid[y*gridSize + x] = '#1d3557'; }
-            for(let x=28; x<36; x++) { skinGrid[y*gridSize + x] = '#1d3557'; }
+        function dibujarSiluetaPersona() {
+            skinGrid.fill('rgba(0,0,0,0)'); 
+
+            // Plantilla clásica de skin desplegada de Minecraft (Formato UV 64x64 real)
+            // Cabeza frontal
+            for(let y=8; y<16; y++) {
+                for(let x=8; x<16; x++) { skinGrid[y*gridSize + x] = '#d4a373'; }
+            }
+            // Torso frontal
+            for(let y=20; y<32; y++) {
+                for(let x=20; x<28; x++) { skinGrid[y*gridSize + x] = '#3f37c9'; }
+            }
+            // Brazo derecho frontal
+            for(let y=20; y<32; y++) {
+                for(let x=44; x<48; x++) { skinGrid[y*gridSize + x] = '#d4a373'; }
+            }
+            // Pierna derecha frontal
+            for(let y=20; y<32; y++) {
+                for(let x=4; x<8; x++) { skinGrid[y*gridSize + x] = '#1d3557'; }
+            }
         }
 
-        // Paleta de colores rápidos
+        dibujarSiluetaPersona();
+
         const colors = [
             '#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', 
             '#ffff00', '#ff00ff', '#00ffff', '#ff5722', '#795548', 
@@ -251,8 +250,11 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let y = 0; y < gridSize; y++) {
                 for (let x = 0; x < gridSize; x++) {
-                    ctx.fillStyle = skinGrid[y * gridSize + x];
-                    ctx.fillRect(x, y, 1, 1);
+                    const color = skinGrid[y * gridSize + x];
+                    if (color !== 'rgba(0,0,0,0)') {
+                        ctx.fillStyle = color;
+                        ctx.fillRect(x, y, 1, 1);
+                    }
                 }
             }
         }
@@ -277,13 +279,12 @@
             
             if (!clientX || !clientY) return;
 
-            // Coordenadas relativas exactas dentro del canvas de 64x64
             const x = Math.floor(((clientX - rect.left) / rect.width) * gridSize);
             const y = Math.floor(((clientY - rect.top) / rect.height) * gridSize);
 
             if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
                 const index = y * gridSize + x;
-                skinGrid[index] = (currentTool === 'pencil') ? colorPicker.value : '#222222';
+                skinGrid[index] = (currentTool === 'pencil') ? colorPicker.value : 'rgba(0,0,0,0)';
                 renderCanvas();
             }
         }
@@ -297,14 +298,30 @@
         window.addEventListener('touchend', () => { isDrawing = false; });
 
         btnClear.addEventListener('click', () => {
-            skinGrid.fill('#222222');
+            dibujarSiluetaPersona();
             renderCanvas();
         });
 
+        // Método infalible para asegurar que se exporta un PNG de 64x64 exactos sin importar la pantalla
         btnDownload.addEventListener('click', () => {
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = 64;
+            exportCanvas.height = 64;
+            const exportCtx = exportCanvas.getContext('2d');
+
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const color = skinGrid[y * gridSize + x];
+                    if (color !== 'rgba(0,0,0,0)') {
+                        exportCtx.fillStyle = color;
+                        exportCtx.fillRect(x, y, 1, 1);
+                    }
+                }
+            }
+
             const link = document.createElement('a');
             link.download = 'skin_minecraft_64x64.png';
-            link.href = canvas.toDataURL('image/png');
+            link.href = exportCanvas.toDataURL('image/png');
             link.click();
         });
 
