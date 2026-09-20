@@ -6,28 +6,127 @@
     <title>SoyPerritoProProYT - Editor y Conversor de Skins 64x64</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: #ffffff; text-align: center; padding: 15px; }
-        header { padding: 25px 15px; background: linear-gradient(135deg, #1f1f1f, #2d2d2d); border-bottom: 4px solid #4CAF50; margin-bottom: 20px; border-radius: 10px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+        }
+        header {
+            padding: 25px 15px;
+            background: linear-gradient(135deg, #1f1f1f, #2d2d2d);
+            border-bottom: 4px solid #4CAF50;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
         h1 { color: #4CAF50; font-size: 2rem; margin-bottom: 5px; }
-        p.subtitle { color: #b0b0b0; font-size: .95rem; }
+        p.subtitle { color: #b0b0b0; font-size: 0.95rem; }
         .container { max-width: 900px; margin: 0 auto; }
-        .card { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,.5); }
+        .card {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
         .card h2 { margin-bottom: 15px; color: #ff9800; font-size: 1.4rem; }
-        .editor-layout { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .toolbar { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; background: #252525; padding: 12px; border-radius: 8px; border: 1px solid #444; }
-        .tool-btn { background: #333; color: white; border: 1px solid #555; padding: 8px 14px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: .2s; }
-        .tool-btn.active, .tool-btn:hover { background: #4CAF50; border-color: #4CAF50; }
-        .color-palette { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; max-width: 350px; margin: 5px 0; }
-        .color-swatch { width: 25px; height: 25px; border-radius: 4px; cursor: pointer; border: 1px solid #fff; }
-        input[type="color"] { border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; background: none; }
-        canvas { background: #1a1a1a; image-rendering: pixelated; image-rendering: crisp-edges; border: 3px solid #555; cursor: crosshair; width: 320px; height: 320px; max-width: 100%; box-shadow: 0 0 20px rgba(0,0,0,.9); border-radius: 4px; touch-action: none; }
-        .action-buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .btn { display: inline-block; padding: 10px 20px; background: #252525; color: white; text-decoration: none; border-radius: 6px; border: 1px solid #555; font-weight: bold; cursor: pointer; transition: .3s; }
+        .editor-layout {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            background: #252525;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        .tool-btn {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 8px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .tool-btn.active, .tool-btn:hover {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .color-palette {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 350px;
+            margin: 5px 0;
+        }
+        .color-swatch {
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #fff;
+        }
+        input[type="color"] {
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: none;
+        }
+        canvas {
+            background: #1a1a1a;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            border: 3px solid #555;
+            cursor: crosshair;
+            width: 320px;
+            height: 320px;
+            max-width: 100%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.9);
+            border-radius: 4px;
+            touch-action: none;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #252525;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1px solid #555;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
         .btn:hover { background: #4CAF50; border-color: #4CAF50; }
         .btn-yt { background: #ff0000; border-color: #ff0000; }
         .btn-yt:hover { background: #cc0000; border-color: #cc0000; }
-        .links-section { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        footer { margin-top: 30px; color: #777; font-size: .9rem; }
+        .links-section {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        footer { margin-top: 30px; color: #777; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -38,22 +137,22 @@
 <div class="container">
     <div class="card">
         <h2>🎨 Dibuja o Sube tu Skin</h2>
-        <p style="margin-bottom:15px;color:#ccc">Usa el editor, elige una skin de tu galería o sube archivos para adaptarlos a 64x64.</p>
+        <p style="margin-bottom: 15px; color: #ccc;">Usa el editor, elige una skin de tu galería o sube archivos para adaptarlos a 64x64.</p>
         <div class="editor-layout">
             <div class="toolbar">
                 <button class="tool-btn active" id="btnPencil">✏️ Lápiz</button>
                 <button class="tool-btn" id="btnEraser">🧹 Borrador</button>
                 <label>Color: <input type="color" id="colorPicker" value="#00aacc"></label>
-                <input type="file" id="skinUpload" accept="image/png, image/jpeg" style="display:none">
-                <button class="btn" id="btnUploadTrigger" style="background:#0288d1;padding:6px 12px;font-size:.9rem">📂 Elegir Skin</button>
-                <input type="file" id="gallerySkinUpload" accept="image/png, image/jpeg" style="display:none">
-                <button class="btn" id="btnGalleryTrigger" style="background:#e91e63;padding:6px 12px;font-size:.9rem">🖼️ Elegir Skin de Galería a 64x64</button>
-                <button class="btn" id="btnClear" style="padding:6px 12px;font-size:.9rem">Restaurar Base</button>
+                <input type="file" id="skinUpload" accept="image/png, image/jpeg" style="display: none;">
+                <button class="btn" id="btnUploadTrigger" style="background: #0288d1; padding: 6px 12px; font-size: 0.9rem;">📂 Elegir Skin</button>
+                <input type="file" id="gallerySkinUpload" accept="image/png, image/jpeg" style="display: none;">
+                <button class="btn" id="btnGalleryTrigger" style="background: #e91e63; padding: 6px 12px; font-size: 0.9rem;">🖼️ Elegir Skin de Galería a 64x64</button>
+                <button class="btn" id="btnClear" style="padding: 6px 12px; font-size: 0.9rem;">Restaurar Base</button>
             </div>
             <div class="color-palette" id="palette"></div>
             <canvas id="skinCanvas" width="64" height="64"></canvas>
             <div class="action-buttons">
-                <button class="btn" id="btnDownload" style="background:#2e7d32;font-size:1.1rem">📥 Descargar Skin 64x64 (.png)</button>
+                <button class="btn" id="btnDownload" style="background: #2e7d32; font-size: 1.1rem;">📥 Descargar Skin 64x64 (.png)</button>
             </div>
         </div>
     </div>
@@ -62,233 +161,261 @@
         <div class="links-section">
             <a class="btn" href="bedrock/">📁 Carpeta Bedrock</a>
             <a class="btn" href="java/">📁 Carpeta Java</a>
-            <a class="btn btn-yt" href="https://www.youtube.com/@soyperritoproproyt" target="_blank" rel="noopener noreferrer">📺 Canal de YouTube</a>
+            <a class="btn btn-yt" href="https://www.youtube.com/@soyperritoproproyt" target="_blank">📺 Canal de YouTube</a>
         </div>
     </div>
 </div>
-<footer><p>&copy; 2026 SoyPerritoProProYT. Todos los derechos reservados.</p></footer>
+<footer>
+    <p>&copy; 2026 SoyPerritoProProYT. Todos los derechos reservados.</p>
+</footer>
 <script>
-const canvas=document.getElementById('skinCanvas');
-const ctx=canvas.getContext('2d');
-const colorPicker=document.getElementById('colorPicker');
-const btnPencil=document.getElementById('btnPencil');
-const btnEraser=document.getElementById('btnEraser');
-const btnClear=document.getElementById('btnClear');
-const btnDownload=document.getElementById('btnDownload');
-const skinUpload=document.getElementById('skinUpload');
-const btnUploadTrigger=document.getElementById('btnUploadTrigger');
-const gallerySkinUpload=document.getElementById('gallerySkinUpload');
-const btnGalleryTrigger=document.getElementById('btnGalleryTrigger');
-const paletteContainer=document.getElementById('palette');
-const gridSize=64;
-let currentTool='pencil';
-let isDrawing=false;
-let skinGrid=Array(gridSize*gridSize).fill('rgba(0,0,0,0)');
+const canvas = document.getElementById('skinCanvas');
+const ctx = canvas.getContext('2d');
+const colorPicker = document.getElementById('colorPicker');
+const btnPencil = document.getElementById('btnPencil');
+const btnEraser = document.getElementById('btnEraser');
+const btnClear = document.getElementById('btnClear');
+const btnDownload = document.getElementById('btnDownload');
+const skinUpload = document.getElementById('skinUpload');
+const btnUploadTrigger = document.getElementById('btnUploadTrigger');
+const gallerySkinUpload = document.getElementById('gallerySkinUpload');
+const btnGalleryTrigger = document.getElementById('btnGalleryTrigger');
+const paletteContainer = document.getElementById('palette');
 
-function fillRect(xStart,yStart,width,height,color){
-    for(let y=yStart;y<yStart+height;y++){
-        for(let x=xStart;x<xStart+width;x++){
-            if(x>=0&&x<gridSize&&y>=0&&y<gridSize) skinGrid[y*gridSize+x]=color;
+const gridSize = 64;
+let currentTool = 'pencil';
+let isDrawing = false;
+let skinGrid = Array(gridSize * gridSize).fill('rgba(0,0,0,0)');
+
+function fillRect(xStart, yStart, width, height, color) {
+    for (let y = yStart; y < yStart + height; y++) {
+        for (let x = xStart; x < xStart + width; x++) {
+            if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
+                skinGrid[y * gridSize + x] = color;
+            }
         }
     }
 }
 
-function cargarSteveTotal(){
+function cargarSteveTotal() {
     skinGrid.fill('rgba(0,0,0,0)');
-    const cPelo='#3b2314';
-    const cPiel='#c48e69';
-    const cOjo1='#3a2c58';
-    const cOjo2='#ffffff';
-    const cCamisa='#00aacc';
-    const cPantalon='#3b3b8c';
-    const cZapatos='#545454';
 
-    fillRect(8,0,8,8,cPelo);
-    fillRect(16,0,8,8,cPelo);
-    fillRect(0,8,8,8,cPelo);
-    fillRect(8,8,8,8,cPiel);
-    fillRect(16,8,8,8,cPelo);
-    fillRect(24,8,8,8,cPelo);
+    const cPelo = '#3b2314';
+    const cPiel = '#c48e69';
+    const cOjo1 = '#3a2c58';
+    const cOjo2 = '#ffffff';
+    const cCamisa = '#00aacc';
+    const cPantalon = '#3b3b8c';
+    const cZapatos = '#545454';
 
-    skinGrid[10*gridSize+10]=cOjo1;
-    skinGrid[10*gridSize+11]=cOjo2;
-    skinGrid[10*gridSize+13]=cOjo1;
-    skinGrid[10*gridSize+12]=cOjo2;
+    // Cabeza
+    fillRect(8, 0, 8, 8, cPelo);
+    fillRect(16, 0, 8, 8, cPelo);
+    fillRect(0, 8, 8, 8, cPelo);
+    fillRect(8, 8, 8, 8, cPiel);
+    fillRect(16, 8, 8, 8, cPelo);
+    fillRect(24, 8, 8, 8, cPelo);
 
-    fillRect(20,16,8,4,cCamisa);
-    fillRect(28,16,8,4,cCamisa);
-    fillRect(16,20,4,12,cCamisa);
-    fillRect(20,20,8,12,cCamisa);
-    fillRect(28,20,4,12,cCamisa);
-    fillRect(32,20,8,12,cCamisa);
+    skinGrid[10 * gridSize + 10] = cOjo1;
+    skinGrid[10 * gridSize + 11] = cOjo2;
+    skinGrid[10 * gridSize + 13] = cOjo1;
+    skinGrid[10 * gridSize + 12] = cOjo2;
 
-    fillRect(40,16,4,4,cPiel);
-    fillRect(44,16,4,4,cPiel);
-    fillRect(36,20,4,12,cPiel);
-    fillRect(40,20,4,12,cPiel);
-    fillRect(40,20,4,4,cCamisa);
-    fillRect(44,20,4,12,cPiel);
-    fillRect(48,20,4,12,cPiel);
-    fillRect(48,20,4,4,cCamisa);
+    // Torso
+    fillRect(20, 16, 8, 4, cCamisa);
+    fillRect(28, 16, 8, 4, cCamisa);
+    fillRect(16, 20, 4, 12, cCamisa);
+    fillRect(20, 20, 8, 12, cCamisa);
+    fillRect(28, 20, 4, 12, cCamisa);
+    fillRect(32, 20, 8, 12, cCamisa);
 
-    fillRect(36,48,4,4,cPiel);
-    fillRect(40,48,4,4,cPiel);
-    fillRect(32,52,4,12,cPiel);
-    fillRect(36,52,4,12,cPiel);
-    fillRect(36,52,4,4,cCamisa);
-    fillRect(40,52,4,12,cPiel);
-    fillRect(44,52,4,12,cPiel);
-    fillRect(44,52,4,4,cCamisa);
+    // Brazo Derecho
+    fillRect(40, 16, 4, 4, cPiel);
+    fillRect(44, 16, 4, 4, cPiel);
+    fillRect(36, 20, 4, 12, cPiel);
+    fillRect(40, 20, 4, 12, cPiel);
+    fillRect(40, 20, 4, 4, cCamisa);
+    fillRect(44, 20, 4, 12, cPiel);
+    fillRect(48, 20, 4, 12, cPiel);
+    fillRect(48, 20, 4, 4, cCamisa);
 
-    fillRect(4,16,4,4,cPantalon);
-    fillRect(8,16,4,4,cZapatos);
-    fillRect(0,20,4,12,cPantalon);
-    fillRect(4,20,4,12,cPantalon);
-    fillRect(4,28,4,4,cZapatos);
-    fillRect(8,20,4,12,cPantalon);
-    fillRect(12,20,4,12,cPantalon);
-    fillRect(12,28,4,4,cZapatos);
+    // Brazo Izquierdo
+    fillRect(36, 48, 4, 4, cPiel);
+    fillRect(40, 48, 4, 4, cPiel);
+    fillRect(32, 52, 4, 12, cPiel);
+    fillRect(36, 52, 4, 12, cPiel);
+    fillRect(36, 52, 4, 4, cCamisa);
+    fillRect(40, 52, 4, 12, cPiel);
+    fillRect(44, 52, 4, 12, cPiel);
+    fillRect(44, 52, 4, 4, cCamisa);
 
-    fillRect(20,48,4,4,cPantalon);
-    fillRect(24,48,4,4,cZapatos);
-    fillRect(16,52,4,12,cPantalon);
-    fillRect(20,52,4,12,cPantalon);
-    fillRect(20,60,4,4,cZapatos);
-    fillRect(24,52,4,12,cPantalon);
-    fillRect(28,52,4,12,cPantalon);
-    fillRect(28,60,4,4,cZapatos);
+    // Pierna Derecha
+    fillRect(4, 16, 4, 4, cPantalon);
+    fillRect(8, 16, 4, 4, cZapatos);
+    fillRect(0, 20, 4, 12, cPantalon);
+    fillRect(4, 20, 4, 12, cPantalon);
+    fillRect(4, 28, 4, 4, cZapatos);
+    fillRect(8, 20, 4, 12, cPantalon);
+    fillRect(12, 20, 4, 12, cPantalon);
+    fillRect(12, 28, 4, 4, cZapatos);
+
+    // Pierna Izquierda
+    fillRect(20, 48, 4, 4, cPantalon);
+    fillRect(24, 48, 4, 4, cZapatos);
+    fillRect(16, 52, 4, 12, cPantalon);
+    fillRect(20, 52, 4, 12, cPantalon);
+    fillRect(20, 60, 4, 4, cZapatos);
+    fillRect(24, 52, 4, 12, cPantalon);
+    fillRect(28, 52, 4, 12, cPantalon);
+    fillRect(28, 60, 4, 4, cZapatos);
 }
 
 cargarSteveTotal();
 
-const colors=[
-    '#000000','#ffffff','#00aacc','#3b3b8c','#c48e69',
-    '#3b2314','#ff0000','#00ff00','#0000ff','#ffff00',
-    '#ff00ff','#00ffff','#ff5722','#795548','#4CAF50'
+const colors = [
+    '#000000', '#ffffff', '#00aacc', '#3b3b8c', '#c48e69',
+    '#3b2314', '#ff0000', '#00ff00', '#0000ff', '#ffff00',
+    '#ff00ff', '#00ffff', '#ff5722', '#795548', '#4CAF50'
 ];
 
-colors.forEach(col=>{
-    const swatch=document.createElement('div');
-    swatch.className='color-swatch';
-    swatch.style.backgroundColor=col;
-    swatch.title=col;
-    swatch.addEventListener('click',()=>{
-        colorPicker.value=col;
-        currentTool='pencil';
+colors.forEach(col => {
+    const swatch = document.createElement('div');
+    swatch.className = 'color-swatch';
+    swatch.style.backgroundColor = col;
+    swatch.title = col;
+    swatch.addEventListener('click', () => {
+        colorPicker.value = col;
+        currentTool = 'pencil';
         btnPencil.classList.add('active');
         btnEraser.classList.remove('active');
     });
     paletteContainer.appendChild(swatch);
 });
 
-function renderCanvas(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    for(let y=0;y<gridSize;y++){
-        for(let x=0;x<gridSize;x++){
-            const color=skinGrid[y*gridSize+x];
-            if(color&&color!=='rgba(0,0,0,0)'){
-                ctx.fillStyle=color;
-                ctx.fillRect(x,y,1,1);
+function renderCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+            const color = skinGrid[y * gridSize + x];
+            if (color && color !== 'rgba(0,0,0,0)') {
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, 1, 1);
             }
         }
     }
 }
 
-btnPencil.addEventListener('click',()=>{
-    currentTool='pencil';
+btnPencil.addEventListener('click', () => {
+    currentTool = 'pencil';
     btnPencil.classList.add('active');
     btnEraser.classList.remove('active');
 });
 
-btnEraser.addEventListener('click',()=>{
-    currentTool='eraser';
+btnEraser.addEventListener('click', () => {
+    currentTool = 'eraser';
     btnEraser.classList.add('active');
     btnPencil.classList.remove('active');
 });
 
-function paintAt(e){
-    if(!isDrawing)return;
-    const rect=canvas.getBoundingClientRect();
-    const touch=e.touches&&e.touches[0];
-    const clientX=e.clientX??touch?.clientX;
-    const clientY=e.clientY??touch?.clientY;
-    if(clientX==null||clientY==null)return;
-    const x=Math.floor(((clientX-rect.left)/rect.width)*gridSize);
-    const y=Math.floor(((clientY-rect.top)/rect.height)*gridSize);
-    if(x>=0&&x<gridSize&&y>=0&&y<gridSize){
-        skinGrid[y*gridSize+x]=currentTool==='pencil'?colorPicker.value:'rgba(0,0,0,0)';
+function paintAt(e) {
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches && e.touches[0];
+    const clientX = e.clientX ?? touch?.clientX;
+    const clientY = e.clientY ?? touch?.clientY;
+
+    if (clientX == null || clientY == null) return;
+
+    const x = Math.floor(((clientX - rect.left) / rect.width) * gridSize);
+    const y = Math.floor(((clientY - rect.top) / rect.height) * gridSize);
+
+    if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
+        const index = y * gridSize + x;
+        skinGrid[index] = currentTool === 'pencil' ? colorPicker.value : 'rgba(0,0,0,0)';
         renderCanvas();
     }
 }
 
-canvas.addEventListener('mousedown',e=>{isDrawing=true;paintAt(e)});
-canvas.addEventListener('mousemove',paintAt);
-window.addEventListener('mouseup',()=>{isDrawing=false});
-canvas.addEventListener('touchstart',e=>{isDrawing=true;paintAt(e);e.preventDefault()},{passive:false});
-canvas.addEventListener('touchmove',e=>{paintAt(e);e.preventDefault()},{passive:false});
-window.addEventListener('touchend',()=>{isDrawing=false});
+canvas.addEventListener('mousedown', e => { isDrawing = true; paintAt(e); });
+canvas.addEventListener('mousemove', paintAt);
+window.addEventListener('mouseup', () => { isDrawing = false; });
+canvas.addEventListener('touchstart', e => { isDrawing = true; paintAt(e); e.preventDefault(); }, { passive: false });
+canvas.addEventListener('touchmove', e => { paintAt(e); e.preventDefault(); }, { passive: false });
+window.addEventListener('touchend', () => { isDrawing = false; });
 
-btnClear.addEventListener('click',()=>{
+btnClear.addEventListener('click', () => {
     cargarSteveTotal();
     renderCanvas();
 });
 
-function cargarImagen(file){
-    if(!file)return;
-    if(file.type!=='image/png'&&file.type!=='image/jpeg'){
+function cargarImagen(file) {
+    if (!file) return;
+
+    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
         alert('Selecciona una imagen PNG o JPG.');
         return;
     }
-    const reader=new FileReader();
-    reader.onload=event=>{
-        const img=new Image();
-        img.onload=()=>{
-            const tempCanvas=document.createElement('canvas');
-            tempCanvas.width=gridSize;
-            tempCanvas.height=gridSize;
-            const tempCtx=tempCanvas.getContext('2d');
-            tempCtx.imageSmoothingEnabled=false;
-            tempCtx.clearRect(0,0,gridSize,gridSize);
-            tempCtx.drawImage(img,0,0,gridSize,gridSize);
-            const data=tempCtx.getImageData(0,0,gridSize,gridSize).data;
-            for(let i=0;i<skinGrid.length;i++){
-                const r=data[i*4],g=data[i*4+1],b=data[i*4+2],a=data[i*4+3];
-                skinGrid[i]=a>0?'rgba('+r+','+g+','+b+','+(a/255)+')':'rgba(0,0,0,0)';
+
+    const reader = new FileReader();
+    reader.onload = event => {
+        const img = new Image();
+        img.onload = () => {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = gridSize;
+            tempCanvas.height = gridSize;
+
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.imageSmoothingEnabled = false;
+            tempCtx.clearRect(0, 0, gridSize, gridSize);
+            tempCtx.drawImage(img, 0, 0, gridSize, gridSize);
+
+            const data = tempCtx.getImageData(0, 0, gridSize, gridSize).data;
+
+            for (let i = 0; i < skinGrid.length; i++) {
+                const r = data[i * 4];
+                const g = data[i * 4 + 1];
+                const b = data[i * 4 + 2];
+                const a = data[i * 4 + 3];
+                skinGrid[i] = a > 0
+                    ? 'rgba(' + r + ',' + g + ',' + b + ',' + (a / 255) + ')'
+                    : 'rgba(0,0,0,0)';
             }
+
             renderCanvas();
         };
-        img.src=event.target.result;
+        img.src = event.target.result;
     };
     reader.readAsDataURL(file);
 }
 
-btnUploadTrigger.addEventListener('click',()=>skinUpload.click());
-skinUpload.addEventListener('change',e=>cargarImagen(e.target.files[0]));
+btnUploadTrigger.addEventListener('click', () => skinUpload.click());
+skinUpload.addEventListener('change', e => cargarImagen(e.target.files[0]));
 
-btnGalleryTrigger.addEventListener('click',()=>gallerySkinUpload.click());
-gallerySkinUpload.addEventListener('change',e=>cargarImagen(e.target.files[0]));
+btnGalleryTrigger.addEventListener('click', () => gallerySkinUpload.click());
+gallerySkinUpload.addEventListener('change', e => cargarImagen(e.target.files[0]));
 
-btnDownload.addEventListener('click',()=>{
-    const exportCanvas=document.createElement('canvas');
-    exportCanvas.width=64;
-    exportCanvas.height=64;
-    const exportCtx=exportCanvas.getContext('2d');
-    exportCtx.imageSmoothingEnabled=false;
-    exportCtx.clearRect(0,0,64,64);
+btnDownload.addEventListener('click', () => {
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 64;
+    exportCanvas.height = 64;
 
-    for(let y=0;y<gridSize;y++){
-        for(let x=0;x<gridSize;x++){
-            const color=skinGrid[y*gridSize+x];
-            if(color&&color!=='rgba(0,0,0,0)'){
-                exportCtx.fillStyle=color;
-                exportCtx.fillRect(x,y,1,1);
+    const exportCtx = exportCanvas.getContext('2d');
+    exportCtx.imageSmoothingEnabled = false;
+    exportCtx.clearRect(0, 0, 64, 64);
+
+    for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+            const color = skinGrid[y * gridSize + x];
+            if (color && color !== 'rgba(0,0,0,0)') {
+                exportCtx.fillStyle = color;
+                exportCtx.fillRect(x, y, 1, 1);
             }
         }
     }
 
-    const link=document.createElement('a');
-    link.download='skin_bedrock_64x64.png';
-    link.href=exportCanvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'skin_bedrock_64x64.png';
+    link.href = exportCanvas.toDataURL('image/png');
     link.click();
 });
 
