@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SoyPerritoProProYT - Editor de Skins Online</title>
+    <title>SoyPerritoProProYT - Editor de Skins Pro</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -11,17 +11,17 @@
             background-color: #121212;
             color: #ffffff;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
         }
         header {
-            padding: 30px 20px;
+            padding: 25px 15px;
             background: linear-gradient(135deg, #1f1f1f, #2d2d2d);
             border-bottom: 4px solid #4CAF50;
             margin-bottom: 20px;
             border-radius: 10px;
         }
-        h1 { color: #4CAF50; font-size: 2.2rem; margin-bottom: 5px; }
-        p.subtitle { color: #b0b0b0; font-size: 1rem; }
+        h1 { color: #4CAF50; font-size: 2rem; margin-bottom: 5px; }
+        p.subtitle { color: #b0b0b0; font-size: 0.95rem; }
         
         .container { max-width: 900px; margin: 0 auto; }
         
@@ -33,38 +33,85 @@
             margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .card h2 { margin-bottom: 15px; color: #ff9800; font-size: 1.5rem; }
+        .card h2 { margin-bottom: 15px; color: #ff9800; font-size: 1.4rem; }
 
-        .editor-container {
+        .editor-layout {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 15px;
         }
-        .tools {
+
+        .toolbar {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
+            background: #252525;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
         }
+
+        .tool-btn, .view-btn {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 8px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .tool-btn.active, .view-btn.active, .tool-btn:hover, .view-btn:hover {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 300px;
+            margin: 5px 0;
+        }
+        .color-swatch {
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #fff;
+        }
+
         input[type="color"] {
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             cursor: pointer;
             background: none;
         }
+
         canvas {
-            background: #2b2b2b;
+            background: #111;
             image-rendering: pixelated;
-            border: 2px solid #555;
+            border: 3px solid #555;
             cursor: crosshair;
             max-width: 100%;
             height: auto;
-            box-shadow: 0 0 15px rgba(0,0,0,0.8);
+            box-shadow: 0 0 20px rgba(0,0,0,0.9);
+            border-radius: 4px;
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -94,24 +141,45 @@
 
     <header>
         <h1>SoyPerritoProProYT</h1>
-        <p class="subtitle">Creador y Editor de Skins para Minecraft Java & Bedrock</p>
+        <p class="subtitle">Editor Profesional de Skins para Minecraft Java & Bedrock</p>
     </header>
 
     <div class="container">
         
-        <!-- Editor Interactivo -->
+        <!-- Editor Pro -->
         <div class="card">
-            <h2>🎨 Editor de Skins Rápido</h2>
-            <p style="margin-bottom: 15px; color: #ccc;">¡Pinta píxel a píxel tu diseño y descárgalo en formato PNG para el juego!</p>
+            <h2>🎨 Editor de Skins Avanzado</h2>
+            <p style="margin-bottom: 15px; color: #ccc;">Selecciona herramienta (Lápiz o Borrador), elige un color de la paleta y pinta tu personaje.</p>
             
-            <div class="editor-container">
-                <div class="tools">
-                    <label>Color: <input type="color" id="colorPicker" value="#4CAF50"></label>
-                    <button class="btn" id="btnClear">Limpiar</button>
-                    <button class="btn" id="btnDownload" style="background: #2e7d32;">Descargar Skin (.png)</button>
+            <div class="editor-layout">
+                <!-- Controles y Herramientas -->
+                <div class="toolbar">
+                    <button class="tool-btn active" id="btnPencil">✏️ Lápiz</button>
+                    <button class="tool-btn" id="btnEraser">🧹 Borrador</button>
+                    <label>Color: <input type="color" id="colorPicker" value="#ff5722"></label>
+                    <button class="btn" id="btnClear" style="padding: 6px 12px; font-size: 0.9rem;">Limpiar Todo</button>
+                </div>
+
+                <!-- Paleta de colores rápidos -->
+                <div class="color-palette" id="palette">
+                    <!-- Se generan por JS -->
+                </div>
+
+                <!-- Selector de Vistas de la Skin -->
+                <div class="toolbar">
+                    <span style="font-size: 0.9rem; color: #aaa;">Vista:</span>
+                    <button class="view-btn active" data-view="front">Frente</button>
+                    <button class="view-btn" data-view="back">Espalda</button>
+                    <button class="view-btn" data-view="head">Cabeza</button>
                 </div>
                 
-                <canvas id="skinCanvas" width="256" height="256"></canvas>
+                <!-- Lienzo Interactivo -->
+                <canvas id="skinCanvas" width="320" height="320"></canvas>
+
+                <!-- Botón de Descarga -->
+                <div class="action-buttons">
+                    <button class="btn" id="btnDownload" style="background: #2e7d32; font-size: 1.1rem;">📥 Descargar Skin (.png)</button>
+                </div>
             </div>
         </div>
 
@@ -135,46 +203,131 @@
         const canvas = document.getElementById('skinCanvas');
         const ctx = canvas.getContext('2d');
         const colorPicker = document.getElementById('colorPicker');
+        const btnPencil = document.getElementById('btnPencil');
+        const btnEraser = document.getElementById('btnEraser');
         const btnClear = document.getElementById('btnClear');
         const btnDownload = document.getElementById('btnDownload');
+        const paletteContainer = document.getElementById('palette');
+        const viewButtons = document.querySelectorAll('.view-btn');
 
-        const gridSize = 32; 
+        const gridSize = 16; // Cuadrícula clásica de mapeo de skin
         const pixelSize = canvas.width / gridSize;
 
-        ctx.fillStyle = '#333333';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+        let currentTool = 'pencil'; // 'pencil' o 'eraser'
+        let currentView = 'front';
         let isDrawing = false;
 
-        function drawPixel(e) {
-            if (!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = Math.floor((e.clientX - rect.left) / (rect.width / gridSize));
-            const y = Math.floor((e.clientY - rect.top) / (rect.height / gridSize));
+        // Almacén de datos para cada vista de la skin
+        const skinData = {
+            front: Array(gridSize * gridSize).fill('#222222'),
+            back: Array(gridSize * gridSize).fill('#222222'),
+            head: Array(gridSize * gridSize).fill('#222222')
+        };
 
-            ctx.fillStyle = colorPicker.value;
-            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-        }
+        // Paleta de colores gamer/Minecraft predefinidos
+        const colors = [
+            '#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', 
+            '#ffff00', '#ff00ff', '#00ffff', '#ff5722', '#795548', 
+            '#8bc34a', '#e91e63', '#9c27b0', '#3f51b5', '#00bcd4'
+        ];
 
-        canvas.addEventListener('mousedown', (e) => { isDrawing = true; drawPixel(e); });
-        canvas.addEventListener('mousemove', drawPixel);
-        window.addEventListener('mouseup', () => { isDrawing = false; });
-
-        canvas.addEventListener('touchstart', (e) => { isDrawing = true; drawPixel(e.touches[0]); e.preventDefault(); });
-        canvas.addEventListener('touchmove', (e) => { drawPixel(e.touches[0]); e.preventDefault(); });
-        window.addEventListener('touchend', () => { isDrawing = false; });
-
-        btnClear.addEventListener('click', () => {
-            ctx.fillStyle = '#333333';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        colors.forEach(col => {
+            const swatch = document.createElement('div');
+            swatch.className = 'color-swatch';
+            swatch.style.backgroundColor = col;
+            swatch.addEventListener('click', () => {
+                colorPicker.value = col;
+                currentTool = 'pencil';
+                btnPencil.classList.add('active');
+                btnEraser.classList.remove('active');
+            });
+            paletteContainer.appendChild(swatch);
         });
 
+        // Dibujar la cuadrícula actual en el canvas
+        function renderCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const currentGrid = skinData[currentView];
+
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const index = y * gridSize + x;
+                    ctx.fillStyle = currentGrid[index];
+                    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                    
+                    // Líneas de la cuadrícula sutiles
+                    ctx.strokeStyle = '#333333';
+                    ctx.strokeRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                }
+            }
+        }
+
+        // Manejar herramientas
+        btnPencil.addEventListener('click', () => {
+            currentTool = 'pencil';
+            btnPencil.classList.add('active');
+            btnEraser.classList.remove('active');
+        });
+
+        btnEraser.addEventListener('click', () => {
+            currentTool = 'eraser';
+            btnEraser.classList.add('active');
+            btnPencil.classList.remove('active');
+        });
+
+        // Cambiar vistas (Frente, Espalda, Cabeza)
+        viewButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                viewButtons.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentView = e.target.getAttribute('data-view');
+                renderCanvas();
+            });
+        });
+
+        // Pintar al hacer clic o arrastrar
+        function paintAt(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            
+            if (!clientX || !clientY) return;
+
+            const x = Math.floor((clientX - rect.left) / (rect.width / gridSize));
+            const y = Math.floor((clientY - rect.top) / (rect.height / gridSize));
+
+            if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
+                const index = y * gridSize + x;
+                skinData[currentView][index] = (currentTool === 'pencil') ? colorPicker.value : '#222222';
+                renderCanvas();
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; paintAt(e); });
+        canvas.addEventListener('mousemove', paintAt);
+        window.addEventListener('mouseup', () => { isDrawing = false; });
+
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; paintAt(e); e.preventDefault(); });
+        canvas.addEventListener('touchmove', (e) => { paintAt(e); e.preventDefault(); });
+        window.addEventListener('touchend', () => { isDrawing = false; });
+
+        // Limpiar vista actual
+        btnClear.addEventListener('click', () => {
+            skinData[currentView].fill('#222222');
+            renderCanvas();
+        });
+
+        // Descargar la skin resultante
         btnDownload.addEventListener('click', () => {
             const link = document.createElement('a');
-            link.download = 'custom_skin_perrito.png';
+            link.download = 'skin_minecraft_personalizada.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
+
+        // Inicializar
+        renderCanvas();
     </script>
 
 </body>
