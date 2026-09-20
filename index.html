@@ -35,7 +35,6 @@
         }
         .card h2 { margin-bottom: 15px; color: #ff9800; font-size: 1.5rem; }
 
-        /* Estilos del Editor */
         .editor-container {
             display: flex;
             flex-direction: column;
@@ -100,10 +99,10 @@
 
     <div class="container">
         
-        <!-- Tarjeta del Editor Interactivo -->
+        <!-- Editor Interactivo -->
         <div class="card">
-            <h2>🎨 Editor de Skins Rápido (Canvas)</h2>
-            <p style="margin-bottom: 15px; color: #ccc;">Selecciona un color, pinta píxel a píxel tu skin y descárgala en PNG para usarla en el juego.</p>
+            <h2>🎨 Editor de Skins Rápido</h2>
+            <p style="margin-bottom: 15px; color: #ccc;">¡Pinta píxel a píxel tu diseño y descárgalo en formato PNG para el juego!</p>
             
             <div class="editor-container">
                 <div class="tools">
@@ -112,12 +111,11 @@
                     <button class="btn" id="btnDownload" style="background: #2e7d32;">Descargar Skin (.png)</button>
                 </div>
                 
-                <!-- Lienzo de la Skin (Se dibuja a 64x64 escalado) -->
                 <canvas id="skinCanvas" width="256" height="256"></canvas>
             </div>
         </div>
 
-        <!-- Acceso a Carpetas y YouTube -->
+        <!-- Accesos a Carpetas y YouTube -->
         <div class="card">
             <h2>📂 Repositorio y Canal</h2>
             <div class="links-section">
@@ -140,11 +138,9 @@
         const btnClear = document.getElementById('btnClear');
         const btnDownload = document.getElementById('btnDownload');
 
-        // Tamaño de la cuadricula de la skin (ej: 64x64 emulado en bloques)
         const gridSize = 32; 
         const pixelSize = canvas.width / gridSize;
 
-        // Rellenar fondo inicial transparente/gris oscuro
         ctx.fillStyle = '#333333';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -164,7 +160,6 @@
         canvas.addEventListener('mousemove', drawPixel);
         window.addEventListener('mouseup', () => { isDrawing = false; });
 
-        // Soporte táctil para móviles
         canvas.addEventListener('touchstart', (e) => { isDrawing = true; drawPixel(e.touches[0]); e.preventDefault(); });
         canvas.addEventListener('touchmove', (e) => { drawPixel(e.touches[0]); e.preventDefault(); });
         window.addEventListener('touchend', () => { isDrawing = false; });
@@ -178,11 +173,9 @@
             const link = document.createElement('a');
             link.download = 'custom_skin_perrito.png';
             link.href = canvas.toDataURL('image/png');
-            link.link;
             link.click();
         });
     </script>
 
 </body>
 </html>
-
