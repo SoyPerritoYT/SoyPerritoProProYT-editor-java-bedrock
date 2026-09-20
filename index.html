@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SoyPerritoProProYT - Editor de Skins Pro</title>
+    <title>SoyPerritoProProYT - Editor de Skins 64x64</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -54,7 +54,7 @@
             border: 1px solid #444;
         }
 
-        .tool-btn, .view-btn {
+        .tool-btn {
             background: #333;
             color: white;
             border: 1px solid #555;
@@ -64,7 +64,7 @@
             font-weight: bold;
             transition: 0.2s;
         }
-        .tool-btn.active, .view-btn.active, .tool-btn:hover, .view-btn:hover {
+        .tool-btn.active, .tool-btn:hover {
             background: #4CAF50;
             border-color: #4CAF50;
         }
@@ -74,7 +74,7 @@
             gap: 5px;
             flex-wrap: wrap;
             justify-content: center;
-            max-width: 300px;
+            max-width: 350px;
             margin: 5px 0;
         }
         .color-swatch {
@@ -95,12 +95,13 @@
         }
 
         canvas {
-            background: #111;
+            background: #1a1a1a;
             image-rendering: pixelated;
             border: 3px solid #555;
             cursor: crosshair;
+            width: 320px;
+            height: 320px;
             max-width: 100%;
-            height: auto;
             box-shadow: 0 0 20px rgba(0,0,0,0.9);
             border-radius: 4px;
         }
@@ -141,49 +142,39 @@
 
     <header>
         <h1>SoyPerritoProProYT</h1>
-        <p class="subtitle">Editor Profesional de Skins para Minecraft Java & Bedrock</p>
+        <p class="subtitle">Editor Oficial de Skins 64x64 para Minecraft</p>
     </header>
 
     <div class="container">
         
-        <!-- Editor Pro -->
+        <!-- Editor 64x64 -->
         <div class="card">
-            <h2>🎨 Editor de Skins Avanzado</h2>
-            <p style="margin-bottom: 15px; color: #ccc;">Selecciona herramienta (Lápiz o Borrador), elige un color de la paleta y pinta tu personaje.</p>
+            <h2>🎨 Editor de Skins 64x64 Pro</h2>
+            <p style="margin-bottom: 15px; color: #ccc;">Diseña tu skin píxel a píxel en formato real de 64x64 listo para importar al juego.</p>
             
             <div class="editor-layout">
-                <!-- Controles y Herramientas -->
+                <!-- Herramientas -->
                 <div class="toolbar">
                     <button class="tool-btn active" id="btnPencil">✏️ Lápiz</button>
                     <button class="tool-btn" id="btnEraser">🧹 Borrador</button>
-                    <label>Color: <input type="color" id="colorPicker" value="#ff5722"></label>
-                    <button class="btn" id="btnClear" style="padding: 6px 12px; font-size: 0.9rem;">Limpiar Todo</button>
+                    <label>Color: <input type="color" id="colorPicker" value="#00bcd4"></label>
+                    <button class="btn" id="btnClear" style="padding: 6px 12px; font-size: 0.9rem;">Limpiar Fondo</button>
                 </div>
 
                 <!-- Paleta de colores rápidos -->
-                <div class="color-palette" id="palette">
-                    <!-- Se generan por JS -->
-                </div>
-
-                <!-- Selector de Vistas de la Skin -->
-                <div class="toolbar">
-                    <span style="font-size: 0.9rem; color: #aaa;">Vista:</span>
-                    <button class="view-btn active" data-view="front">Frente</button>
-                    <button class="view-btn" data-view="back">Espalda</button>
-                    <button class="view-btn" data-view="head">Cabeza</button>
-                </div>
+                <div class="color-palette" id="palette"></div>
                 
-                <!-- Lienzo Interactivo -->
-                <canvas id="skinCanvas" width="320" height="320"></canvas>
+                <!-- Lienzo 64x64 real -->
+                <canvas id="skinCanvas" width="64" height="64"></canvas>
 
-                <!-- Botón de Descarga -->
+                <!-- Descarga -->
                 <div class="action-buttons">
-                    <button class="btn" id="btnDownload" style="background: #2e7d32; font-size: 1.1rem;">📥 Descargar Skin (.png)</button>
+                    <button class="btn" id="btnDownload" style="background: #2e7d32; font-size: 1.1rem;">📥 Descargar Skin 64x64 (.png)</button>
                 </div>
             </div>
         </div>
 
-        <!-- Accesos a Carpetas y YouTube -->
+        <!-- Accesos -->
         <div class="card">
             <h2>📂 Repositorio y Canal</h2>
             <div class="links-section">
@@ -208,27 +199,39 @@
         const btnClear = document.getElementById('btnClear');
         const btnDownload = document.getElementById('btnDownload');
         const paletteContainer = document.getElementById('palette');
-        const viewButtons = document.querySelectorAll('.view-btn');
 
-        const gridSize = 16; // Cuadrícula clásica de mapeo de skin
-        const pixelSize = canvas.width / gridSize;
-
-        let currentTool = 'pencil'; // 'pencil' o 'eraser'
-        let currentView = 'front';
+        const gridSize = 64; // Formato oficial de skin 64x64
+        let currentTool = 'pencil';
         let isDrawing = false;
 
-        // Almacén de datos para cada vista de la skin
-        const skinData = {
-            front: Array(gridSize * gridSize).fill('#222222'),
-            back: Array(gridSize * gridSize).fill('#222222'),
-            head: Array(gridSize * gridSize).fill('#222222')
-        };
+        // Matriz de 64x64 inicializada en color de fondo oscuro
+        let skinGrid = Array(gridSize * gridSize).fill('#222222');
 
-        // Paleta de colores gamer/Minecraft predefinidos
+        // Dibujar silueta básica centrada del personaje en la plantilla 64x64
+        // Cabeza
+        for(let y=8; y<24; y++) {
+            for(let x=24; x<40; x++) { skinGrid[y*gridSize + x] = '#d4a373'; }
+        }
+        // Torso
+        for(let y=24; y<40; y++) {
+            for(let x=20; x<36; x++) { skinGrid[y*gridSize + x] = '#3f37c9'; }
+        }
+        // Brazos
+        for(let y=24; y<40; y++) {
+            for(let x=12; x<20; x++) { skinGrid[y*gridSize + x] = '#d4a373'; }
+            for(let x=36; x<44; x++) { skinGrid[y*gridSize + x] = '#d4a373'; }
+        }
+        // Piernas
+        for(let y=40; y<60; y++) {
+            for(let x=20; x<28; x++) { skinGrid[y*gridSize + x] = '#1d3557'; }
+            for(let x=28; x<36; x++) { skinGrid[y*gridSize + x] = '#1d3557'; }
+        }
+
+        // Paleta de colores rápidos
         const colors = [
             '#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', 
             '#ffff00', '#ff00ff', '#00ffff', '#ff5722', '#795548', 
-            '#8bc34a', '#e91e63', '#9c27b0', '#3f51b5', '#00bcd4'
+            '#d4a373', '#3f37c9', '#1d3557', '#e91e63', '#4CAF50'
         ];
 
         colors.forEach(col => {
@@ -244,25 +247,16 @@
             paletteContainer.appendChild(swatch);
         });
 
-        // Dibujar la cuadrícula actual en el canvas
         function renderCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const currentGrid = skinData[currentView];
-
             for (let y = 0; y < gridSize; y++) {
                 for (let x = 0; x < gridSize; x++) {
-                    const index = y * gridSize + x;
-                    ctx.fillStyle = currentGrid[index];
-                    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                    
-                    // Líneas de la cuadrícula sutiles
-                    ctx.strokeStyle = '#333333';
-                    ctx.strokeRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                    ctx.fillStyle = skinGrid[y * gridSize + x];
+                    ctx.fillRect(x, y, 1, 1);
                 }
             }
         }
 
-        // Manejar herramientas
         btnPencil.addEventListener('click', () => {
             currentTool = 'pencil';
             btnPencil.classList.add('active');
@@ -275,17 +269,6 @@
             btnPencil.classList.remove('active');
         });
 
-        // Cambiar vistas (Frente, Espalda, Cabeza)
-        viewButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                viewButtons.forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                currentView = e.target.getAttribute('data-view');
-                renderCanvas();
-            });
-        });
-
-        // Pintar al hacer clic o arrastrar
         function paintAt(e) {
             if (!isDrawing) return;
             const rect = canvas.getBoundingClientRect();
@@ -294,12 +277,13 @@
             
             if (!clientX || !clientY) return;
 
-            const x = Math.floor((clientX - rect.left) / (rect.width / gridSize));
-            const y = Math.floor((clientY - rect.top) / (rect.height / gridSize));
+            // Coordenadas relativas exactas dentro del canvas de 64x64
+            const x = Math.floor(((clientX - rect.left) / rect.width) * gridSize);
+            const y = Math.floor(((clientY - rect.top) / rect.height) * gridSize);
 
             if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
                 const index = y * gridSize + x;
-                skinData[currentView][index] = (currentTool === 'pencil') ? colorPicker.value : '#222222';
+                skinGrid[index] = (currentTool === 'pencil') ? colorPicker.value : '#222222';
                 renderCanvas();
             }
         }
@@ -312,21 +296,18 @@
         canvas.addEventListener('touchmove', (e) => { paintAt(e); e.preventDefault(); });
         window.addEventListener('touchend', () => { isDrawing = false; });
 
-        // Limpiar vista actual
         btnClear.addEventListener('click', () => {
-            skinData[currentView].fill('#222222');
+            skinGrid.fill('#222222');
             renderCanvas();
         });
 
-        // Descargar la skin resultante
         btnDownload.addEventListener('click', () => {
             const link = document.createElement('a');
-            link.download = 'skin_minecraft_personalizada.png';
+            link.download = 'skin_minecraft_64x64.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
 
-        // Inicializar
         renderCanvas();
     </script>
 
